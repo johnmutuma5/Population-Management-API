@@ -4,7 +4,7 @@
   "description": "A Population Management API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_ENV=test nyc _mocha src/**/*.spec.js --exit",
     "start": "NODE_ENV=development DEBUG=log nodemon --exec babel-node src/index.js"
   },
   "repository": {
@@ -32,6 +32,11 @@
     "@babel/node": "^7.5.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.5.4",
     "@babel/preset-env": "^7.5.4",
-    "@babel/register": "^7.4.4"
+    "@babel/register": "^7.4.4",
+    "babel-plugin-istanbul": "^5.1.4",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.1"
   }
 }
