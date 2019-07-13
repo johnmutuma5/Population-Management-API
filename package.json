@@ -1,0 +1,36 @@
+{
+  "name": "population-management",
+  "version": "1.0.0",
+  "description": "A Population Management API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=development DEBUG=log nodemon --exec babel-node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnmutuma5/Population-Management-API"
+  },
+  "keywords": [
+    "population"
+  ],
+  "author": "John Mutuma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johnmutuma5/Population-Management-API"
+  },
+  "homepage": "https://github.com/johnmutuma5/Population-Management-API#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.4",
+    "@babel/node": "^7.5.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.5.4",
+    "@babel/preset-env": "^7.5.4",
+    "@babel/register": "^7.4.4"
+  }
+}
