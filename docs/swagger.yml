@@ -1,0 +1,108 @@
+openapi: 3.0.0
+
+info:
+  title: Population Management System
+  description: This API allows users to manage Population data for locations
+  version: 1.0.0
+
+servers:
+  - url: '{protocol}://127.0.0.1:{port}/v1'
+    description: Development server (uses test data)
+    variables:
+      port:
+        enum:
+          - "3000"
+        default: "3000"
+      protocol:
+        enum:
+          - http
+          - https
+        default: http
+
+consumes:
+  - application/json
+
+content:
+  - application/json
+
+paths:
+  /locations:
+    post:
+      summary: Creates new location containing data about the total number of people by gender. Locations can be nested within each other
+      description: Allows users to create a new location 
+      tags:
+        - Contacts
+
+      requestBody:
+        description: Data containing information about the location to be created
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Location"
+            examples:
+              CreateKarura:
+                value:
+                  name: Karura Area
+                  maleCount: 20000
+                  femaleCount: 21000
+                  parentLocationId: fabcd1234976fcdebdef
+
+      responses:
+        "201":
+          description: On successful creation of a new location
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/responses/BaseResponseData"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          createdLocation:
+                            $ref: "#/components/responses/Location"
+              examples:
+                CreateKaruraSuccess:
+                  value:
+                    status: success
+                    message: Created location successfully
+                    data:
+                      createdLocation:
+                        name: Karura Area
+                        maleCount: 20000
+                        femaleCount: 21000
+                        parentLocationId: 5abcdef342393948abcd
+
+components:
+  schemas:
+    Location:
+      type: object
+      properties:
+        name:
+          type: string
+        maleCount:
+          type: number
+        femaleCount:
+          type: number
+        parentLocationId:
+          type: string
+
+  responses:
+    BaseResponseData:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+
+    Location:
+      allOf:
+        - $ref: "#/components/schemas/Location"
+        - type: object
+          properties:
+            _id: 
+              type: string
+      
+
