@@ -10,3 +10,12 @@ services:
     volumes:
       - /app/node_modules
       - ../../:/app
+    depends_on:
+      - database
+    environment:
+      DATABASE_URI: mongodb://database:27017/population-manager
+
+  database:
+    image: mongo
+    container_name: mongo-db
+    restart: always

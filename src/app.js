@@ -1,10 +1,18 @@
 import express from 'express';
 import cors from 'cors';
+import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import appRouter from './app-router';
 
 const app = express();
+const DATABASE_URI = process.env.DATABASE_URI
 
+// connect to database
+mongoose
+  .connect(DATABASE_URI, { useNewUrlParser: true, useCreateIndex: true }) 
+  .then(() => console.info('APP: Connected to database'));
+
+// register app-wide middleware
 app.use(cors());
 app.use(bodyParser.json());
 
