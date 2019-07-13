@@ -18,3 +18,12 @@ In order to run the application properly with these instructions, you'll need to
 - Navigate into the project's root directory and run:
   - >  make run
   - In case you have a problem running with `make`, you can open the `Makefile` in this directory and run the rule for `run` in your terminal
+
+## Running the Tests
+After navigating to the project's root directory, run:
+
+  - > make test
+
+## Installing Dependencies
+The project dependencies are meant to be auto-installed when the application container initialises. In case you need to manually install the dependecies in the container, you can do so by running the following command:
+  - > make install
