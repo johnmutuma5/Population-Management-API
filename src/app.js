@@ -3,9 +3,10 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import appRouter from './app-router';
+import config from './config';
 
 const app = express();
-const DATABASE_URI = process.env.DATABASE_URI
+const DATABASE_URI = config.DATABASE_URI; 
 
 // connect to database
 mongoose

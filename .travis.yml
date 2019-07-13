@@ -1,0 +1,18 @@
+language: node_js
+node_js: 12.2.0
+
+sudo: required
+
+services:
+  - docker
+
+before_script:
+  - docker-compose -f ./docker/dev/docker-compose.yml up -d server
+
+script:
+  - docker-compose -f ./docker/dev/docker-compose.yml exec server npm run test
+
+after_success:
+  - docker-compose -f ./docker/dev/docker-compose.yml exec server npm run coverage:coveralls
+  - docker-compose -f ./docker/dev/docker-compose.yml down
+
