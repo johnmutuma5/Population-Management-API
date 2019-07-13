@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import appRouter from './app-router';
 import config from './config';
+import yaml from 'yamljs';
+import  swaggerUi from 'swagger-ui-express';
 
 const app = express();
 const DATABASE_URI = config.DATABASE_URI; 
@@ -18,6 +20,10 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use('/v1', appRouter);
+
+// api docs 
+const swaggerDocument = yaml.load('docs/swagger.yml');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // handle all unfound routes
 app.use('*', (req, res) => (

@@ -33,23 +33,35 @@ paths:
       tags:
         - Contacts
 
+      requestBody:
+        description: Data containing information about the location to be created
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Location"
+            examples:
+              CreateKarura:
+                value:
+                  name: Karura Area
+                  maleCount: 20000
+                  femaleCount: 21000
+                  parentLocationId: fabcd1234976fcdebdef
+
       responses:
         "201":
           description: On successful creation of a new location
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                  message:
-                    type: string
-                  data:
-                    type: object
+                allOf:
+                  - $ref: "#/components/responses/BaseResponseData"
+                  - type: object
                     properties:
-                      createdLocation:
-                        $ref: "#/components/responses/Location"
+                      data:
+                        type: object
+                        properties:
+                          createdLocation:
+                            $ref: "#/components/responses/Location"
               examples:
                 CreateKaruraSuccess:
                   value:
@@ -60,7 +72,7 @@ paths:
                         name: Karura Area
                         maleCount: 20000
                         femaleCount: 21000
-                        parentLocation: 5abcdef342393948abcd
+                        parentLocationId: 5abcdef342393948abcd
 
 components:
   schemas:
@@ -73,15 +85,24 @@ components:
           type: number
         femaleCount:
           type: number
-        parentLocation:
+        parentLocationId:
           type: string
 
-  reponses:
+  responses:
+    BaseResponseData:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+
     Location:
       allOf:
-        - "#/components/schemas/Location"
+        - $ref: "#/components/schemas/Location"
         - type: object
           properties:
             _id: 
+              type: string
       
 
