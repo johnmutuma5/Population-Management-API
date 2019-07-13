@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/johnmutuma5/Population-Management-API.svg?branch=develop)](https://travis-ci.org/johnmutuma5/Population-Management-API)
+[![Coverage Status](https://coveralls.io/repos/github/johnmutuma5/Population-Management-API/badge.svg?branch=develop)](https://coveralls.io/github/johnmutuma5/Population-Management-API?branch=develop)
+
 # Population-Management-API
 An API for the population management system. The system contains a list of locations and the total number of residents in each location broken down by gender.
 
