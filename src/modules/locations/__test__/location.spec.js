@@ -11,6 +11,30 @@ describe('Locations', () => {
     await Location.deleteMany({});
   });
 
+  describe ('Get locations', ()  => {
+    it('lists created locations', async () => {
+      const karura = await Location.create({
+        name: 'Karura',
+        maleCount: 2000,
+        femaleCount: 2100,
+      });
+
+      const karuraChild = await Location.create({
+        name: 'Karura Child',
+        maleCount: 500,
+        femaleCount: 1100,
+        parentLocationId: karura._id,
+      });
+
+      const resp = await chai.request(app)
+        .get('/v1/locations/')
+        .send();
+
+      expect(resp.statusCode).to.equal(200);
+      expect(resp.body.data.locations.length).to.equal(2);
+    });
+  });
+
   describe('Create Location', async () => {
     it('creates a new location without parent locations', async () => {
       const resp = await chai.request(app)
