@@ -110,4 +110,38 @@ export default class LocationController {
       data: { locations: locations_ },
     });
   }
+
+  /**
+   * Update locations
+   */
+  static async updateLocation (req, res, next) {
+    const {
+      body: {
+        name,
+        parentLocationId,
+        femaleCount,
+        maleCount,
+      },
+      params: { id },
+    } = req;
+    
+    const updatedLocation = await Location.findOneAndUpdate(
+      Types.ObjectId(id),
+      { $set: { name, parentLocationId, femaleCount, maleCount, } },
+      { new: true }
+    );
+
+    if(!updatedLocation) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Location not found',
+      });
+    }
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Updated location successfully',
+      data: { updatedLocation },
+    })
+  }
 }

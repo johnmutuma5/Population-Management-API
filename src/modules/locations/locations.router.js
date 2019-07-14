@@ -3,17 +3,25 @@ import LocationController from './locations.controller';
 import { RequestValidator } from '../../shared/middleware';
 
 const locationRouter = new Router();
-const { validateCreateLocationBody } = RequestValidator;
+const { validateFullLocationBody, validateUpdateRequestParams } = RequestValidator;
 
 locationRouter
   .route('')
   .post(
-    validateCreateLocationBody,
+    validateFullLocationBody,
     LocationController.createLocation,
   )
 
 locationRouter
   .route('')
   .get(LocationController.listLocations)
+
+locationRouter
+  .route('/:id')
+  .put(
+    validateFullLocationBody,
+    validateUpdateRequestParams,
+    LocationController.updateLocation
+  )
 
 export default locationRouter;

@@ -180,6 +180,76 @@ paths:
                     message: Parent location not found
                     errorCode: UNKNOWNPARENTLOCATION
 
+    put:
+      summary: Updats a location's details 
+      description: Allows users to update the details of a location. The location resource is completely replaced by the data as it is supplied in the request body for all known properties of a Location. All unsupplied known fields will cause the updated version of the resource to have no values for these fields. Client applications should make sure that they auto-fill the record form to avoid unintentionally losing existing location data. 
+      tags:
+        - Locations
+
+      requestBody:
+        description: Data containing information about the location to be updated.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Location"
+            examples:
+              updateKaruraChildLocation:
+                value:
+                  name: Karura Child
+                  maleCount: 2500
+                  femaleCount: 2700
+                  parentLocationId: fabcd1234976fcdebdef
+
+      responses:
+        "200":
+          description: On successful update of a new location
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/responses/BaseResponseData"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          updatedLocation:
+                            $ref: "#/components/responses/Location"
+              examples:
+                updateKaruraChildSuccess:
+                  value:
+                    status: success
+                    message: Updated location successfully
+                    data:
+                      updatedLocation:
+                        _id: 5d2ad1bc646edc0d4a93e214
+                        name: Karura Child
+                        maleCount: 2000
+                        femaleCount: 2000
+                        parentLocationId: 5abcdef342393948abcd
+
+
+        "400":
+          description: Bad request - arises when the request body is invalid. It can also arise when the location id in params is not a valid mongo id
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/responses/BaseFailureResponseData"
+                  - type: object
+                    properties:
+                      error:
+                        path:
+                          type: string
+              examples:
+                MissingFemaleCount:
+                  value:
+                    status: fail
+                    message: Missing or invalid value in request body
+                    errorCode: INVALIDBODY
+                    error:
+                      path: femaleCount
+
 
 
 # schemas for requests and responses
