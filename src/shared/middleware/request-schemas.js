@@ -1,11 +1,14 @@
 import Joi from '@hapi/joi';
 Joi.objectId = require('joi-objectid')(Joi);
 
-// create location
-export const createLocationBodySchema = {
+// full location
+export const fullLocationBodySchema = {
   name: Joi.string().required(),
   maleCount: Joi.number().required(),
   femaleCount: Joi.number().integer().required(),
   parentLocationId: Joi.objectId(),
 };
 
+export const updateLocationParamsSchema = {
+  id: Joi.objectId(),
+}

@@ -11,6 +11,41 @@ describe('Locations', () => {
     await Location.deleteMany({});
   });
 
+  describe('Update location', () => {
+    it('should update a location', async () => {
+      const karura = await Location.create({
+        name: 'Karura',
+        maleCount: 2000,
+        femaleCount: 2100,
+      });
+
+      const resp = await chai.request(app)
+        .put(`/v1/locations/${karura._id}`)
+        .send({
+          name: 'Karura update',
+          maleCount: 2500,
+          femaleCount: 2200,
+        });
+
+      expect(resp.statusCode).to.equal(200)
+      expect(resp.body.data.updatedLocation.name).to.equal('Karura update');
+      expect(resp.body.data.updatedLocation.femaleCount).to.equal(2200);
+    });
+
+    it('should validate request params', async () => {
+      const resp = await chai.request(app)
+        .put(`/v1/locations/invalidlocationidinparams}`)
+        .send({
+          name: 'Karura update',
+          maleCount: 2500,
+          femaleCount: 2200,
+        });
+
+      expect(resp.statusCode).to.equal(400);
+      expect(resp.body.errorCode).to.equal('INVALIDPARAMS');
+    });
+  });
+
   describe ('Get locations', ()  => {
     it('lists created locations', async () => {
       const karura = await Location.create({
