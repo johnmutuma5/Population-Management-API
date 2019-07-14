@@ -133,6 +133,53 @@ paths:
                         femaleCount: 19000
                         parentLocationId: 5abcdef342393948abcd
 
+        "400":
+          description: Bad request - arises when the request body is invalid. This may also arise when there are not enough people in a location to create a sub-location witht the specified demographic data 
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/responses/BaseFailureResponseData"
+                  - type: object
+                    properties:
+                      error:
+                        path:
+                          type: string
+              examples:
+                MissingFemaleCount:
+                  value:
+                    status: fail
+                    message: Missing or invalid value in request body
+                    errorCode: INVALIDBODY
+                    error:
+                      path: femaleCount
+                NotEnoughFemalesToCreateSublocation:
+                  value:
+                    status: fail
+                    message: Not enough females in parent location to assign new location
+                    errorCode: INADEQUATEHEADCOUNT
+                    parentLocation:
+                      _id: 5abcdef342393948abcd
+                      name: Karura Area
+                      maleCount: 18000
+                      femaleCount: 19000
+                      parentLocationId: 5abcdef342393948abcd
+
+
+
+        "404":
+          description: Missing resource - when the request can not be served due to a missing resource 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/BaseFailureResponseData"
+              examples: 
+                MissingParentLocation:
+                  value:
+                    status: fail
+                    message: Parent location not found
+                    errorCode: UNKNOWNPARENTLOCATION
+
     put:
       summary: Updats a location's details 
       description: Allows users to update the details of a location. The location resource is completely replaced by the data as it is supplied in the request body for all known properties of a Location. All unsupplied known fields will cause the updated version of the resource to have no values for these fields. Client applications should make sure that they auto-fill the record form to avoid unintentionally losing existing location data. 
@@ -146,7 +193,7 @@ paths:
             schema:
               $ref: "#/components/schemas/Location"
             examples:
-              CreateKaruraChildLocation:
+              updateKaruraChildLocation:
                 value:
                   name: Karura Child
                   maleCount: 2500
