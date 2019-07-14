@@ -27,6 +27,53 @@ content:
 
 paths:
   /locations:
+    get:
+      summary: List all locations
+      description: Allow users to get a list of all created locations
+      tags:
+        - Locations
+
+      responses:
+        "200":
+          description: Get locations succesfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/responses/BaseResponseData"
+                  - type: object
+                    properties:
+                      data:
+                        locations:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              _id:
+                                type: string
+                              name:
+                                type: string
+                              totalMaleCount:
+                                type: number
+                              totalFemaleCount:
+                                type: number
+              examples:
+                SuccessGetLocations:
+                  value:
+                    status: success
+                    message: Created location successfully
+                    data:
+                      locations:
+                        - name: Karura
+                          _id: fabcd1234976fcdebdef
+                          totalMaleCount: 20000
+                          totalFemaleCount: 21000
+                        - name: Karura Child
+                          _id: fabcd1234976fcdebdef
+                          totalMaleCount: 20000
+                          totalFemaleCount: 21000
+                          parentLocationId: fabcd1234976fcdebdef
+
     post:
       summary: Creates new location containing data about the total number of people by gender. Locations can be nested within each other
       description: Allows users to create a new location 
@@ -79,7 +126,7 @@ paths:
                         maleCount: 2000
                         femaleCount: 2000
                         parentLocationId: 5abcdef342393948abcd
-                      updatedParentLocation:
+                      parentLocation:
                         _id: 5abcdef342393948abcd
                         name: Karura Area
                         maleCount: 18000
@@ -87,7 +134,7 @@ paths:
                         parentLocationId: 5abcdef342393948abcd
 
         "400":
-          description: Bad request - arises when the request body is invalid 
+          description: Bad request - arises when the request body is invalid. This may also arise when there are not enough people in a location to create a sub-location witht the specified demographic data 
           content:
             application/json:
               schema:
@@ -106,6 +153,19 @@ paths:
                     errorCode: INVALIDBODY
                     error:
                       path: femaleCount
+                NotEnoughFemalesToCreateSublocation:
+                  value:
+                    status: fail
+                    message: Not enough females in parent location to assign new location
+                    errorCode: INADEQUATEHEADCOUNT
+                    parentLocation:
+                      _id: 5abcdef342393948abcd
+                      name: Karura Area
+                      maleCount: 18000
+                      femaleCount: 19000
+                      parentLocationId: 5abcdef342393948abcd
+
+
 
         "404":
           description: Missing resource - when the request can not be served due to a missing resource 
