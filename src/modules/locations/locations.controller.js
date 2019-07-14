@@ -61,7 +61,53 @@ export default class LocationController {
     return res.status(201).json({
       status: 'success',
       message: 'Created location successfully',
-      data: { createdLocation, updatedParentLocation },
+      data: { createdLocation, parentLocation },
+    });
+  }
+
+  /**
+   * get locations with demographic data
+   */
+  static async listLocations(req, res, next) {
+    const locations = await Location.find();
+    const childLocationsTotals = await Location.aggregate([
+      {
+        $group: {
+          _id: '$parentLocationId',
+          childrenMaleCount: { $sum: '$maleCount' },
+          childrenFemaleCount: { $sum: '$femaleCount' },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          locationId: '$_id',
+          childrenMaleCount: 1,
+          childrenFemaleCount: 1,
+        }
+      }
+    ]);
+    
+    const locations_ = [];
+    locations.forEach(location => {
+      childLocationsTotals.forEach((totals, index) => {
+        if (totals.locationId === location._id.toString()) {
+          const { femaleCount, maleCount, name, _id, parentLocationId } = location;
+          locations_.push({
+            name, _id, parentLocationId,
+            totalMaleCount: location.maleCount + totals.childrenMaleCount,
+            totalFemaleCount: location.femaleCount + totals.childrenFemaleCount,
+          });
+          childLocationsTotals.splice(index, 1);
+        } else {
+          locations_.push(location);
+        }
+      });
+    })
+    return res.status(200).json({
+      status: 'success',
+      message: 'Retrived locations successfully',
+      data: { locations: locations_ },
     });
   }
 }

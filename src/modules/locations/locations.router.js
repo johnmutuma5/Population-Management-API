@@ -12,4 +12,8 @@ locationRouter
     LocationController.createLocation,
   )
 
+locationRouter
+  .route('')
+  .get(LocationController.listLocations)
+
 export default locationRouter;
