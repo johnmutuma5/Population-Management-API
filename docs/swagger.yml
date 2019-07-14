@@ -31,7 +31,7 @@ paths:
       summary: Creates new location containing data about the total number of people by gender. Locations can be nested within each other
       description: Allows users to create a new location 
       tags:
-        - Contacts
+        - Locations
 
       requestBody:
         description: Data containing information about the location to be created
@@ -69,11 +69,49 @@ paths:
                     message: Created location successfully
                     data:
                       createdLocation:
+                        _id: 5d2ad1bc646edc0d4a93e214
                         name: Karura Area
                         maleCount: 20000
                         femaleCount: 21000
                         parentLocationId: 5abcdef342393948abcd
 
+        "400":
+          description: Bad request - arises when the request body is invalid 
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/responses/BaseFailureResponseData"
+                  - type: object
+                    properties:
+                      error:
+                        path:
+                          type: string
+              examples:
+                MissingFemaleCount:
+                  value:
+                    status: fail
+                    message: Missing or invalid value in request body
+                    errorCode: INVALIDBODY
+                    error:
+                      path: femaleCount
+
+        "404":
+          description: Missing resource - when the request can not be served due to a missing resource 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/BaseFailureResponseData"
+              examples: 
+                MissingParentLocation:
+                  value:
+                    status: fail
+                    message: Parent location not found
+                    errorCode: UNKNOWNPARENTLOCATION
+
+
+
+# schemas for requests and responses
 components:
   schemas:
     Location:
@@ -96,6 +134,15 @@ components:
           type: string
         message:
           type: string
+
+    BaseFailureResponseData:
+      allOf:
+        - $ref: "#/components/responses/BaseResponseData"
+        - type: object
+          properties:
+            errorCode:
+              type: string
+
 
     Location:
       allOf:

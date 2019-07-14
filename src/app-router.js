@@ -1,8 +1,8 @@
 import { Router } from 'express';
-// import { phoneRouter } from './modules/phone';
+import { locationRouter } from './modules/locations';
 const appRouter = new Router();
 
 // register all modules' routes here
-// appRouter.use('/v1', phoneRouter);
+appRouter.use('/locations', locationRouter);
 
 export default appRouter;

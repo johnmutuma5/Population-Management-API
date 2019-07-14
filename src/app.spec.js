@@ -1,12 +1,5 @@
-import chai from 'chai';
-import chaiHttp from 'chai-http';
-
+import chai, { expect } from '../src/test-setup';
 import app from './app';
-
-
-chai.use(chaiHttp);
-
-const { expect } = chai;
 
 describe('App', () => {
   it('handles unknown paths', async () => {
