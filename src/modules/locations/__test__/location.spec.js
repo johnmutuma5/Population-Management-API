@@ -11,6 +11,31 @@ describe('Locations', () => {
     await Location.deleteMany({});
   });
 
+  describe('Delete location', () => {
+    it('should delete a location', async () => {
+      const karura = await Location.create({
+        name: 'Karura',
+        maleCount: 2000,
+        femaleCount: 2100,
+      });
+
+      const karuraChild = await Location.create({
+        name: 'Karura',
+        maleCount: 2000,
+        femaleCount: 2100,
+        parentLocationId: karura._id,
+      });
+
+      const resp = await chai.request(app)
+        .delete(`/v1/locations/${karura._id}`)
+        .send();
+      // deletes parent and children
+      expect(resp.statusCode).to.equal(200);
+      expect(resp.body.data.parentDeleteInfo.deletedCount).to.equal(1);
+      expect(resp.body.data.childDeleteInfo.deletedCount).to.equal(1);
+    });
+  });
+
   describe('Update location', () => {
     it('should update a location', async () => {
       const karura = await Location.create({
