@@ -14,7 +14,7 @@ services:
       - database
     environment:
       DATABASE_URI: mongodb://database:27017/population-manager
-      DATABASE_URI_TEST: mongodb://database:27017/sms-manager-test
+      DATABASE_URI_TEST: mongodb://database:27017/population-manager-test
       TRAVIS: ${TRAVIS}
       TRAVIS_JOB_ID: ${TRAVIS_JOB_ID}
       TRAVIS_BRANCH: ${TRAVIS_BRANCH}
@@ -23,5 +23,5 @@ services:
 
   database:
     image: mongo
-    container_name: mongo-db
+    container_name: mongo-db-population
     restart: always
