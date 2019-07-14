@@ -34,7 +34,7 @@ paths:
         - Locations
 
       requestBody:
-        description: Data containing information about the location to be created
+        description: Data containing information about the location to be created. **NB: See child location example payload from the examples picklist below. Substitute the `parentLocationId` with the _id generated when the parent location was created**
         content:
           application/json:
             schema:
@@ -45,6 +45,11 @@ paths:
                   name: Karura Area
                   maleCount: 20000
                   femaleCount: 21000
+              CreateKaruraChildLocation:
+                value:
+                  name: Karura Child
+                  maleCount: 2000
+                  femaleCount: 2000
                   parentLocationId: fabcd1234976fcdebdef
 
       responses:
@@ -63,16 +68,22 @@ paths:
                           createdLocation:
                             $ref: "#/components/responses/Location"
               examples:
-                CreateKaruraSuccess:
+                CreateKaruraChildSuccess:
                   value:
                     status: success
                     message: Created location successfully
                     data:
                       createdLocation:
                         _id: 5d2ad1bc646edc0d4a93e214
+                        name: Karura Child
+                        maleCount: 2000
+                        femaleCount: 2000
+                        parentLocationId: 5abcdef342393948abcd
+                      updatedParentLocation:
+                        _id: 5abcdef342393948abcd
                         name: Karura Area
-                        maleCount: 20000
-                        femaleCount: 21000
+                        maleCount: 18000
+                        femaleCount: 19000
                         parentLocationId: 5abcdef342393948abcd
 
         "400":
@@ -119,12 +130,16 @@ components:
       properties:
         name:
           type: string
+          required: true
         maleCount:
           type: number
+          required: true
         femaleCount:
           type: number
+          required: true
         parentLocationId:
           type: string
+          required: false
 
   responses:
     BaseResponseData:
