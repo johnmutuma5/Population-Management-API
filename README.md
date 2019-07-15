@@ -17,6 +17,11 @@ The system provides an API that enables you to:
 
 In order to run the application properly with these instructions, you'll need to have `docker` and `docker-compose` installed locally on your computer.
 
+### Interact with the API
+Use a client application of your choice to interact with the API.
+
+You could use Postman or curl if you will, but the API exposes a it's Swagger Docs on here. You can comfortably use that on each endpoint by hitting the Try it Out button after you expand the endpoint documetation accordion.
+
 #### Steps 
 - Navigate into the project's root directory and run:
   - >  make run
