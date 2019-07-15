@@ -150,15 +150,22 @@ export default class LocationController {
    */
   static async deleteLocation (req, res, next) {
     const { params: { id } } = req;
-    const parentDeleteInfo = await Location.deleteOne({_id: id});
-    const childDeleteInfo = await Location.deleteMany({
-      parentLocationId: id,
-    });
+    const parentLocation = await Location.findOne(Types.ObjectId(id));
+
+    let childUpdateInfo;
+    if(parentLocation) {
+      const newParentLocationId = parentLocation.parentLocationId;
+      childUpdateInfo = await Location.updateMany(
+        { parentLocationId: parentLocation._id },
+        { $set: { parentLocationId: newParentLocationId  } },
+      );
+    }
+    const  parentDeleteInfo = await Location.deleteOne({_id: id});
 
     return res.status(200).json({
       status: 'success',
-      message: 'Deleted location and nested locations',
-      data: { parentDeleteInfo, childDeleteInfo },
+      message: 'Deleted location and updated nested locations',
+      data: { parentDeleteInfo, childUpdateInfo },
     });
   }
 }
