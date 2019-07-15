@@ -12,7 +12,7 @@ describe('Locations', () => {
   });
 
   describe('Delete location', () => {
-    it('should delete a location', async () => {
+    it('should delete a location and update child locations with new parent', async () => {
       const karura = await Location.create({
         name: 'Karura',
         maleCount: 2000,
@@ -32,7 +32,13 @@ describe('Locations', () => {
       // deletes parent and children
       expect(resp.statusCode).to.equal(200);
       expect(resp.body.data.parentDeleteInfo.deletedCount).to.equal(1);
-      expect(resp.body.data.childDeleteInfo.deletedCount).to.equal(1);
+      expect(resp.body.data.childUpdateInfo.nModified).to.equal(1);
+      
+      const updatedChild = await Location.find({
+        _id: karuraChild._id
+      })
+      const newParentLocationId = karura.parentLocationId;
+      expect(updatedChild.parentLocationId).to.equal(newParentLocationId);
     });
   });
 
