@@ -20,7 +20,7 @@ In order to run the application properly with these instructions, you'll need to
 ### Interact with the API
 Use a client application of your choice to interact with the API.
 
-You could use Postman or curl if you will, but the API exposes a it's Swagger Docs on here. You can comfortably use that on each endpoint by hitting the Try it Out button after you expand the endpoint documetation accordion.
+You could use Postman or curl if you will, but the API exposes a it's Swagger Docs [here](http://localhost:3000/api-docs/). You can comfortably use that on each endpoint by hitting the Try it Out button after you expand the endpoint documetation accordion.
 
 #### Steps 
 - Navigate into the project's root directory and run:
