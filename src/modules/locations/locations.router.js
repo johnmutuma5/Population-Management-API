@@ -3,7 +3,7 @@ import LocationController from './locations.controller';
 import { RequestValidator } from '../../shared/middleware';
 
 const locationRouter = new Router();
-const { validateFullLocationBody, validateUpdateRequestParams } = RequestValidator;
+const { validateFullLocationBody, validateRequestParamsObjectId } = RequestValidator;
 
 locationRouter
   .route('')
@@ -20,8 +20,15 @@ locationRouter
   .route('/:id')
   .put(
     validateFullLocationBody,
-    validateUpdateRequestParams,
+    validateRequestParamsObjectId,
     LocationController.updateLocation
+  )
+
+locationRouter
+  .route('/:id')
+  .delete(
+    validateRequestParamsObjectId,
+    LocationController.deleteLocation,
   )
 
 export default locationRouter;

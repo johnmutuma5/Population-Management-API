@@ -1,7 +1,7 @@
 import Joi from '@hapi/joi';
 import { 
   fullLocationBodySchema,
-  updateLocationParamsSchema,
+  requestParamsObjectIdSchema,
 } from './request-schemas';
 
 export default class RequestValidator {
@@ -25,10 +25,10 @@ export default class RequestValidator {
     return next();
   }
 
-  static validateUpdateRequestParams (req, res, next) {
+  static validateRequestParamsObjectId (req, res, next) {
     const { params } = req;
 
-    const { error, value } = Joi.validate(params, updateLocationParamsSchema);
+    const { error, value } = Joi.validate(params, requestParamsObjectIdSchema);
     if (error && error.isJoi) {
       const { details: [ details ] } = error;
       const { path: [ field ] } = details;

@@ -144,4 +144,21 @@ export default class LocationController {
       data: { updatedLocation },
     })
   }
+
+  /**
+   * delete location
+   */
+  static async deleteLocation (req, res, next) {
+    const { params: { id } } = req;
+    const parentDeleteInfo = await Location.deleteOne({_id: id});
+    const childDeleteInfo = await Location.deleteMany({
+      parentLocationId: id,
+    });
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Deleted location and nested locations',
+      data: { parentDeleteInfo, childDeleteInfo },
+    });
+  }
 }

@@ -9,6 +9,6 @@ export const fullLocationBodySchema = {
   parentLocationId: Joi.objectId(),
 };
 
-export const updateLocationParamsSchema = {
+export const requestParamsObjectIdSchema = {
   id: Joi.objectId(),
 }
