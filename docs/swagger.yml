@@ -180,11 +180,25 @@ paths:
                     message: Parent location not found
                     errorCode: UNKNOWNPARENTLOCATION
 
+
+  /locations/{id}:
     put:
       summary: Updats a location's details 
       description: Allows users to update the details of a location. The location resource is completely replaced by the data as it is supplied in the request body for all known properties of a Location. All unsupplied known fields will cause the updated version of the resource to have no values for these fields. Client applications should make sure that they auto-fill the record form to avoid unintentionally losing existing location data. 
       tags:
         - Locations
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The Object ID of the location to update
+          examples:
+            updateLocationId:
+              value: fabcdefabcdef12344544
+
 
       requestBody:
         description: Data containing information about the location to be updated.
@@ -228,7 +242,6 @@ paths:
                         femaleCount: 2000
                         parentLocationId: 5abcdef342393948abcd
 
-
         "400":
           description: Bad request - arises when the request body is invalid. It can also arise when the location id in params is not a valid mongo id
           content:
@@ -249,8 +262,58 @@ paths:
                     errorCode: INVALIDBODY
                     error:
                       path: femaleCount
+    delete:
+      summary: List all locations
+      description: Allow users to get a list of all created locations
+      tags:
+        - Locations
 
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The Object ID of the location to update
+          examples:
+            DeleteLocationId:
+              value: fabcdefabcdef12344544
 
+      responses:
+        "200":
+          description: Get locations succesfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/responses/BaseResponseData"
+                  - type: object
+                    properties:
+                      data:
+                        parentDeletedInfo:
+                          type: object
+                          properties:
+                            deletedCount:
+                              type: number
+                        childDeletedInfo:
+                          type: object
+                          properties:
+                            deletedCount:
+                              type: number
+              examples:
+                SuccessDeleteLocations:
+                  value:
+                    status: success
+                    message: Deleted location successfully
+                    data:
+                      locations:
+                        - name: Karura
+                          _id: fabcd1234976fcdebdef
+                          data:
+                            parentDeleteInfo:
+                              deletedCount: 1
+                            childDeleteInfo:
+                              deletedCount: 2
 
 # schemas for requests and responses
 components:
